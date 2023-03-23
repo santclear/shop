@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shop/pages/counter_page.dart';
+// ignore: depend_on_referenced_packages
+import 'package:provider/provider.dart';
+import 'package:shop/models/product_list.dart';
 import 'package:shop/pages/product_detail_page.dart';
 import 'package:shop/pages/products_overview_page.dart';
-import 'package:shop/providers/counter.dart';
 import 'package:shop/utils/app_routes.dart';
 
 void main() {
@@ -15,22 +16,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-        fontFamily: 'Lato',
-        colorScheme: ColorScheme.fromSwatch(
+    return ChangeNotifierProvider(
+      create: (_) => ProductList(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
           primarySwatch: Colors.purple,
-        ).copyWith(
-          secondary: Colors.deepOrange,
+          fontFamily: 'Lato',
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.purple,
+          ).copyWith(
+            secondary: Colors.deepOrange,
+          ),
         ),
+        home: ProductsOverviewPage(),
+        routes: {
+          AppRoutes.PRODUCT_DETAIL: (ctx) => const ProductDetailPage(),
+        },
+        debugShowCheckedModeBanner: false,
       ),
-      home: ProductsOverviewPage(),
-      routes: {
-        AppRoutes.PRODUCT_DETAIL: (ctx) => const ProductDetailPage(),
-      },
-      debugShowCheckedModeBanner: false,
     );
   }
 }
