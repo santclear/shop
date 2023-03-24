@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:shop/models/product_list.dart';
 import 'package:shop/pages/product_detail_page.dart';
