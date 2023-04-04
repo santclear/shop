@@ -8,18 +8,32 @@ class ProductFormPage extends StatefulWidget {
 }
 
 class _ProductFormPageState extends State<ProductFormPage> {
+  final priceFocus = FocusNode();
+  final descriptionFocus = FocusNode();
+  final imageUrlFocus = FocusNode();
+  final imageUrlController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    imageUrlFocus.addListener(updateImage);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    priceFocus.dispose();
+    descriptionFocus.dispose();
+    imageUrlFocus.removeListener(updateImage);
+    imageUrlFocus.dispose();
+  }
+
+  void updateImage() {
+    setState(() { });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final priceFocus = FocusNode();
-    final descriptionFocus = FocusNode();
-
-    @override
-    void dispose() {
-      super.dispose();
-      priceFocus.dispose();
-      descriptionFocus.dispose();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Form'),
@@ -54,6 +68,41 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 focusNode: descriptionFocus,
                 keyboardType: TextInputType.multiline,
                 maxLines: 3,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(labelText: 'Image Url'),
+                      keyboardType: TextInputType.url,
+                      textInputAction: TextInputAction.done,
+                      focusNode: imageUrlFocus,
+                      controller: imageUrlController,
+                    ),
+                  ),
+                  Container(
+                    height: 100,
+                    width: 100,
+                    margin: const EdgeInsets.only(
+                      top: 10,
+                      left: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1,
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: imageUrlController.text.isEmpty
+                        ? const Text('Provide de Url')
+                        : FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.network(imageUrlController.text),
+                          ),
+                  ),
+                ],
               ),
             ],
           ),
