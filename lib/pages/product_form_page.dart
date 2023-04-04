@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
 
-class ProductFormPage extends StatelessWidget {
+class ProductFormPage extends StatefulWidget {
   const ProductFormPage({Key? key}) : super(key: key);
 
   @override
+  State<ProductFormPage> createState() => _ProductFormPageState();
+}
+
+class _ProductFormPageState extends State<ProductFormPage> {
+  @override
   Widget build(BuildContext context) {
-    final _priceFocus = FocusNode();
+    final priceFocus = FocusNode();
+    final descriptionFocus = FocusNode();
+
+    @override
+    void dispose() {
+      super.dispose();
+      priceFocus.dispose();
+      descriptionFocus.dispose();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Form'),
@@ -21,16 +35,26 @@ class ProductFormPage extends StatelessWidget {
                 ),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_priceFocus);
+                  FocusScope.of(context).requestFocus(priceFocus);
                 },
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Price'),
                 textInputAction: TextInputAction.next,
-                focusNode: _priceFocus,
+                focusNode: priceFocus,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(descriptionFocus);
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Description'),
+                textInputAction: TextInputAction.next,
+                focusNode: descriptionFocus,
+                keyboardType: TextInputType.multiline,
+                maxLines: 3,
               ),
             ],
           ),
