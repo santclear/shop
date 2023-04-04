@@ -51,7 +51,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Description'),
-                textInputAction: TextInputAction.next,
                 focusNode: descriptionFocus,
                 keyboardType: TextInputType.multiline,
                 maxLines: 3,
