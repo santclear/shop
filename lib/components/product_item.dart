@@ -24,10 +24,12 @@ class ProductItem extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () {},
+              color: Theme.of(context).primaryColor,
               icon: const Icon(Icons.edit),
             ),
             IconButton(
               onPressed: () {},
+              color: Theme.of(context).errorColor,
               icon: const Icon(Icons.delete),
             ),
           ],
