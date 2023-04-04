@@ -5,6 +5,7 @@ class ProductFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _priceFocus = FocusNode();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Form'),
@@ -19,6 +20,17 @@ class ProductFormPage extends StatelessWidget {
                   labelText: 'Name',
                 ),
                 textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_priceFocus);
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Price'),
+                textInputAction: TextInputAction.next,
+                focusNode: _priceFocus,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
               ),
             ],
           ),
