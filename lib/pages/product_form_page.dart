@@ -32,11 +32,16 @@ class _ProductFormPageState extends State<ProductFormPage> {
     setState(() { });
   }
 
+  void _submitForm() {
+    print('submit...');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Form'),
+        actions: [IconButton(onPressed: _submitForm, icon: const Icon(Icons.save))],
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -79,6 +84,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       textInputAction: TextInputAction.done,
                       focusNode: imageUrlFocus,
                       controller: imageUrlController,
+                      onFieldSubmitted: (_) => _submitForm(),
                     ),
                   ),
                   Container(
