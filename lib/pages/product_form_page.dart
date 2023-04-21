@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:shop/models/product.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/models/product_list.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({Key? key}) : super(key: key);
@@ -40,7 +39,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   bool isValidImageUrl(String url) {
     bool isValidUrl = Uri.tryParse(url)?.hasAbsolutePath ?? false;
-    bool endsWithFile =  url.toLowerCase().endsWith('.png') ||
+    bool endsWithFile = url.toLowerCase().endsWith('.png') ||
         url.toLowerCase().endsWith('.jpg') ||
         url.toLowerCase().endsWith('.jpeg');
     return isValidUrl && endsWithFile;
@@ -55,13 +54,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
     _formKey.currentState?.save();
 
-    final newProduct = Product(
-      id: Random().nextDouble().toString(),
-      name: _formData['name'] as String,
-      description: _formData['description'] as String,
-      price: _formData['price'] as double,
-      imageUrl: _formData['imageUrl'] as String,
-    );
+    Provider.of<ProductList>(
+      context,
+      listen: false,
+    ).addProductFromData(_formData);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -118,7 +115,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   final priceString = priceParam ?? '-1';
                   final price = double.tryParse(priceString) ?? -1;
 
-                  if(price <= 0) {
+                  if (price <= 0) {
                     return 'Provide a valid price.';
                   }
 
@@ -161,7 +158,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                           _formData['imageUrl'] = imageUrl ?? '',
                       validator: (imageUrlParam) {
                         final imageUrl = imageUrlParam ?? '';
-                        if(!isValidImageUrl(imageUrl)) {
+                        if (!isValidImageUrl(imageUrl)) {
                           return 'Provide a valid url!';
                         }
                         return null;
