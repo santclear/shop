@@ -33,7 +33,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     if (_formData.isEmpty) {
       final arg = ModalRoute.of(context)?.settings.arguments;
 
-      if(arg != null) {
+      if (arg != null) {
         final product = arg as Product;
         _formData['id'] = product.id;
         _formData['name'] = product.name;
@@ -206,9 +206,13 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     alignment: Alignment.center,
                     child: imageUrlController.text.isEmpty
                         ? const Text('Provide de Url')
-                        : FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.network(imageUrlController.text),
+                        : SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: Image.network(imageUrlController.text),
+                            ),
                           ),
                   ),
                 ],
