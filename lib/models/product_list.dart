@@ -59,6 +59,9 @@ class ProductList with ChangeNotifier {
           imageUrl: product.imageUrl,
           isFavorite: product.isFavorite));
       notifyListeners();
+    }).catchError((error) {
+      print(error.toString());
+      throw error;
     });
   }
 
