@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/models/product.dart';
 
 class ProductList with ChangeNotifier {
@@ -114,9 +115,13 @@ class ProductList with ChangeNotifier {
         Uri.parse('$_baseUrl.json/${product.id}.json'),
       );
 
-      if(response.statusCode >= 400) {
+      if (response.statusCode >= 400) {
         _items.insert(index, product);
         notifyListeners();
+        throw HttpException(
+          msg: 'Could not delete the product.',
+          statusCode: response.statusCode,
+        );
       }
     }
   }
