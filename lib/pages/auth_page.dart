@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shop/components/auth_form.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -47,14 +48,15 @@ class AuthPage extends StatelessWidget {
                     ],
                   ),
                   child: const Text(
-                    'Minha Loja',
+                    'My Store',
                     style: TextStyle(
                       fontSize: 45,
                       fontFamily: 'Anton',
                       color: Colors.white,
                     ),
                   ),
-                )
+                ),
+                const AuthForm(),
               ],
             ),
           ),
