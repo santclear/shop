@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop/exceptions/auth_exception.dart';
 import 'package:shop/models/auth.dart';
 
-enum AuthMode { signup, login }
+enum AuthMode { SIGNUP, LOGIN }
 
 class AuthForm extends StatefulWidget {
   const AuthForm({Key? key}) : super(key: key);
@@ -12,26 +12,61 @@ class AuthForm extends StatefulWidget {
   State<AuthForm> createState() => _AuthFormState();
 }
 
-class _AuthFormState extends State<AuthForm> {
+class _AuthFormState extends State<AuthForm>
+    with SingleTickerProviderStateMixin {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  AuthMode _authMode = AuthMode.login;
+  AuthMode _authMode = AuthMode.LOGIN;
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
 
-  bool _isLogin() => _authMode == AuthMode.login;
+  AnimationController? _controller;
+  Animation<Size>? _heightAnimation;
 
-  bool _isSignup() => _authMode == AuthMode.signup;
+  bool _isLogin() => _authMode == AuthMode.LOGIN;
+
+  bool _isSignup() => _authMode == AuthMode.SIGNUP;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(
+        milliseconds: 150,
+      ),
+    );
+
+    _heightAnimation = Tween(
+      begin: const Size(double.infinity, 310),
+      end: const Size(double.infinity, 400),
+    ).animate(
+      CurvedAnimation(
+        parent: _controller!,
+        curve: Curves.linear,
+      ),
+    );
+
+    _heightAnimation?.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller?.dispose();
+  }
 
   void _switchAuthMode() {
     setState(() {
       if (_isLogin()) {
-        _authMode = AuthMode.signup;
+        _authMode = AuthMode.SIGNUP;
+        _controller?.forward();
       } else {
-        _authMode = AuthMode.login;
+        _authMode = AuthMode.LOGIN;
+        _controller?.reverse();
       }
     });
   }
@@ -79,7 +114,7 @@ class _AuthFormState extends State<AuthForm> {
       }
     } on AuthException catch (error) {
       _showErrorDialog(error.toString());
-    } catch(error) {
+    } catch (error) {
       _showErrorDialog('an unexpected error occurred!');
     }
 
@@ -96,7 +131,7 @@ class _AuthFormState extends State<AuthForm> {
       ),
       child: Container(
         padding: const EdgeInsets.all(16),
-        height: _isLogin() ? 310 : 400,
+        height: _heightAnimation?.value.height ?? (_isLogin() ? 310 : 400),
         width: deviceSize.width * 0.75,
         child: Form(
           key: _formKey,
@@ -160,7 +195,7 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                   ),
                   child: Text(
-                    _authMode == AuthMode.login ? 'LOGIN' : 'SIGNUP',
+                    _authMode == AuthMode.LOGIN ? 'LOGIN' : 'SIGNUP',
                   ),
                 ),
               const Spacer(),
